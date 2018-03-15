@@ -2,9 +2,10 @@ import { combineReducers } from 'redux';
 import user from './user';
 import flash from './flash';
 
-const rootReducer = combineReducers({
+const rootReducer = combineReducers( {
   user,
-  flash
-});
+  flash,
+  posts,
+} );
 
 export default rootReducer;
