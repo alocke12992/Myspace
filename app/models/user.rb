@@ -6,4 +6,16 @@ class User < ActiveRecord::Base
   include DeviseTokenAuth::Concerns::User
  has_many :posts
  has_many :bios
+
+ serialize :friends, Array 
+
+ def self.liked(ids)
+    ids = ids.empty? ? [0] : ids 
+    User.where("id IN (?)", ids)
+  end 
+
+  def self.random_user(ids)
+    ids = ids.empty? ? [0] : ids 
+    User.where("id NOT IN (?)", ids).order("RANDOM()")
+  end 
 end
