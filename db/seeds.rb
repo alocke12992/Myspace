@@ -1,6 +1,22 @@
-20.times do 
-  username = Faker::StarWars.character  
-  body = Faker::StarWars.quote, 
-  img = Faker::Avatar.image, 
-  Post.create(username: username, body: body, img: img)
-end 
+x = 0
+30.times do 
+  x += 1
+  user = User.create(
+    name: Faker::BackToTheFuture.character,
+    image: Faker::Avatar.image,
+    email: "test#{x}@test.com",
+    password: 'password',
+  )
+  5.times do 
+    Post.create(
+    body: Faker::Hipster.paragraph, 
+    user_id: user.id,
+    )
+  end 
+  1.times do 
+    Bio.create(
+      bio: Faker::Hipster.paragraph,
+      user_id: user.id,
+    )
+    end 
+end

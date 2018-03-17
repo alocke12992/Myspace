@@ -3,18 +3,29 @@ import { Menu } from 'semantic-ui-react';
 import { Link, withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { handleLogout } from '../actions/auth';
+import PostForm from './PostForm'
+import Users from './Users'
 
-class NavBar extends Component {
-  rightNavs = () => {
+class NavBar extends Component
+{
+  rightNavs = () =>
+  {
     const { user, dispatch, history } = this.props;
 
-    if (user.id) {
+    if ( user.id )
+    {
       return (
         <Menu.Menu position='right'>
           <Menu.Item
             name='Logout'
-            onClick={() => dispatch(handleLogout(history))}
+            onClick={ () => dispatch( handleLogout( history ) ) }
           />
+          <Link to='/new'>
+            <Menu.Item name="Add Post" />
+          </Link>
+          <Link to='/users'>
+            <Menu.Item name="Find Friends" />
+          </Link>
         </Menu.Menu>
       );
     }
@@ -30,7 +41,8 @@ class NavBar extends Component {
     );
   }
 
-  render() {
+  render()
+  {
     return (
       <div>
         <Menu pointing secondary>
@@ -44,8 +56,9 @@ class NavBar extends Component {
   }
 }
 
-const mapStateToProps = state => {
+const mapStateToProps = state =>
+{
   return { user: state.user };
 };
 
-export default withRouter(connect(mapStateToProps)(NavBar));
+export default withRouter( connect( mapStateToProps )( NavBar ) );

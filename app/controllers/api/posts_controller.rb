@@ -1,10 +1,12 @@
 class Api::PostsController < ApplicationController
 
-  before_action :set, only: [:show, :update, :create, :destroy]
+  before_action :set_post, only: [:show, :update, :destroy]
 
+ 
   def index
-    render json: Post.all 
+    render json: current_user.posts.all
   end
+
 
   def show
     render json: @post 
@@ -20,11 +22,11 @@ class Api::PostsController < ApplicationController
 
   def create
     post = Post.new(post_params)
-
-    if post
+  
+    if post.save
       render json: post 
     else 
-      render json: post.erros, status: 422
+      render json: post.errors, status: 422
     end 
   end
 
@@ -34,10 +36,10 @@ class Api::PostsController < ApplicationController
 
   private 
     def set_post 
-      @post = Post.find(params[:id])
+      @post = current_user.post.find(params[:id])
     end 
     
     def post_params 
-      params.require(:post).permit(:username, :body)
+      params.require(:post).permit(:username, :body, :img, :user_id) 
     end 
 end
