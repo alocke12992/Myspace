@@ -1,6 +1,6 @@
 import React from 'react';
-import { Segment, Form, Button, TextArea } from 'semantic-ui-react';
-import { editBio, addBio } from '../actions/bios';
+import { Form, Button, TextArea } from 'semantic-ui-react';
+import { addBio } from '../actions/bios';
 import { connect } from 'react-redux';
 
 

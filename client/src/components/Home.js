@@ -47,7 +47,7 @@ class Home extends Component
       <div>
         <Header as='h1' textAlign='center'>Home Component
         </Header>
-        <Link to='/posts'>My Profile</Link>
+        <Link to='/profile'>My Profile</Link>
         <Card.Group itemsPerRow={ 4 }>
           { this.users() }
         </Card.Group>

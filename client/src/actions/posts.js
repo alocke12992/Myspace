@@ -36,11 +36,11 @@ export const editPost = ( post ) =>
 }
 
 
-export const deletePost = ( id ) =>
+export const deletePost = ( post ) =>
 {
   return ( dispatch ) =>
   {
-    axios.delete( `/api/posts/${ id }` )
-      .then( res => dispatch( { type: DELETE_POST, id, headers: res.headers } ) )
+    axios.delete( `/api/posts/${ post }` )
+      .then( res => dispatch( { type: DELETE_POST, post, headers: res.headers } ) )
   }
 }

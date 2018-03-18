@@ -2,7 +2,6 @@ import React from 'react';
 import { Segment, Form, Button, TextArea } from 'semantic-ui-react';
 import { editPost, addPost } from '../actions/posts';
 import { connect } from 'react-redux';
-import { Redirect } from 'react-router-dom';
 
 class PostForm extends React.Component
 {
@@ -29,17 +28,18 @@ class PostForm extends React.Component
   handleSubmit = ( e ) =>
   {
     e.preventDefault()
-    let post = {
+    const post = {
       title: this.state.title,
       body: this.state.body,
       user_id: this.props.coolPerson.id
     }
-    this.props.dispatch( addPost( post ) )
+    const { dispatch, closeForm } = this.props
+    dispatch( addPost( post ) )
     this.setState( { title: '', body: '' } )
-    this.props.history.push( "/posts" )
+    closeForm()
   }
 
-  render()
+  form()
   {
     const { title, body, coolPerson } = this.props
     return (

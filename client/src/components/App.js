@@ -9,18 +9,18 @@ import ProtectedRoute from './ProtectedRoute';
 import AuthRoute from './AuthRoute';
 import FetchUser from './FetchUser';
 import { Switch, Route } from 'react-router-dom';
-import Posts from './Posts';
-import PostForm from './PostForm'
 import Users from './Users'
-import BioForm from './BioForm'
+import Profile from './Profile'
 
 
 class App extends Component
 {
+
+
   render()
   {
     return (
-      <div>
+      < div >
         <NavBar />
         <Flash />
         <FetchUser>
@@ -28,14 +28,12 @@ class App extends Component
             <Route exact path='/' component={ Home } />
             <AuthRoute exact path='/login' component={ Login } />
             <AuthRoute exact path='/register' component={ Register } />
-            <Route exact path='/new' component={ PostForm } />
-            <Route exact path='/bio' component={ BioForm } />
-            <Route exact path='/posts' component={ Posts } />
-            <Route exact path='/users' component={ Users } />
+            <ProtectedRoute exact path='/profile' component={ Profile } />
+            <ProtectedRoute exact path='/users' component={ Users } />
             <Route component={ NoMatch } />
           </Switch>
         </FetchUser>
-      </div>
+      </div >
     );
   }
 }

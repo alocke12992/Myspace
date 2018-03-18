@@ -3,7 +3,6 @@ import { Menu } from 'semantic-ui-react';
 import { Link, withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { handleLogout } from '../actions/auth';
-import PostForm from './PostForm'
 import Users from './Users'
 
 class NavBar extends Component
@@ -20,9 +19,6 @@ class NavBar extends Component
             name='Logout'
             onClick={ () => dispatch( handleLogout( history ) ) }
           />
-          <Link to='/new'>
-            <Menu.Item name="Add Post" />
-          </Link>
           <Link to='/users'>
             <Menu.Item name="Find Friends" />
           </Link>

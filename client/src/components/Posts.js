@@ -1,17 +1,16 @@
 import React from 'react'
 import { connect } from 'react-redux';
-import { Link } from 'react-router-dom';
-import { editBio, addBio, getBios } from '../actions/bios';
-import { getPosts } from '../actions/posts';
-import { Container, Button, Card, Icon, Grid, Segment, Form, } from 'semantic-ui-react';
+import { getPosts, addPost, deletePost } from '../actions/posts';
+import { Card, Icon, Button, Form, Segment, TextArea } from 'semantic-ui-react';
+import PostForm from './PostForm'
 
 class Posts extends React.Component
 {
-  state = { bio: " ", showform: false }
+  state = { showform: false }
 
   componentDidMount()
   {
-    this.props.dispatch( getPosts(), getBios() )
+    this.props.dispatch( getPosts() )
   }
 
   toggleForm = () =>
@@ -24,7 +23,7 @@ class Posts extends React.Component
 
   handleChange = ( e ) =>
   {
-    debugger
+
     const { name, value } = e.target
     this.setState( { [name]: value } )
   }
@@ -32,37 +31,56 @@ class Posts extends React.Component
   handleSubmit = ( e ) =>
   {
     e.preventDefault()
-    let bio = {
-      bio: this.state.bio,
+    const post = {
+      title: this.state.title,
+      body: this.state.body,
       user_id: this.props.coolPerson.id
     }
-    this.props.dispatch( addBio( bio ) )
-    this.setState( { bio: '', showForm: false } )
+    const { dispatch, closeForm } = this.props
+    dispatch( addPost( post ) )
+    this.setState( { title: '', body: '', showForm: false } )
   }
 
-  form()
+  removePost = () =>
   {
 
-    const { bio } = this.props
+    const post = { id: this.props.id }
+    const { dispatch } = this.props
+
+    dispatch( deletePost( post ) )
+  }
+
+  form = () => 
+  {
+    const { title, body, coolPerson } = this.props
     return (
       <div>
-        <Form >
-          <Form.TextArea
-            name="bio"
-            required
-            defaultValue={ bio }
-            onChange={ this.handleChange }
-            label="Add a bio"
-          />
-          <Form.Button size="mini" onClick={ this.handleSubmit }>Save</Form.Button>
-        </Form>
+        <Segment as="h2">What's going on { coolPerson.name } ?</Segment>
+        <Segment.Group>
+          <Segment>
+            <Form onSubmit={ this.handleSubmit }>
+              <Form.Group widths="equal">
+                <Form.Input
+                  onChange={ this.handleChange }
+                  defaultValue={ title }
+                  name='title'
+                  placeholder='Title'
+                />
+              </Form.Group>
+              <TextArea onChange={ this.handleChange } defaultValue={ body } name='body' placeholder="Tell us what you're up to" />
+              <Segment textAlign='center' basic>
+                <Button primary type="submit">Submit</Button>
+              </Segment>
+            </Form>
+          </Segment>
+        </Segment.Group>
       </div>
     )
   }
 
   posts = () =>
   {
-    const { coolPerson, posts } = this.props
+    const { posts } = this.props
     return posts.map( post =>
 
       <Card key={ post.id }>
@@ -71,62 +89,54 @@ class Posts extends React.Component
           <Card.Header>
             { post.title }
           </Card.Header>
-          <Card.Description>
+          <Card.Content>
             { post.body }
-          </Card.Description>
-          <Icon name='favorite' />
+          </Card.Content>
+          {/* TODO EDIT AND DELETE */ }
+          <Button id={ post.id } floated="right" icon="edit" />
+          <Button id={ post.id } floated="right" icon="delete" onClick={ this.removePost } />
         </Card.Content>
       </Card>
     )
   }
 
 
-
-  bio = () =>
-  {
-    return this.props.bio.map( bio =>
-      <div key={ bio.id }>
-        <p>{ bio.bio }</p>
-      </div>
-    )
-  }
-
   render()
   {
     const { showForm } = this.state
+    if ( showForm )
+    {
+      return (
+        <div>
+          { this.form() }
+          <Card.Group itemsPerRow={ 1 }>
+            { this.posts() }
+          </Card.Group>
+        </div>
+      )
+    }
     return (
       <div>
-        <Grid columns={ 3 } relaxed>
-          <Grid.Column>
-            <Segment>
-              <h3>Bio</h3>
-              { showForm ? this.form() : this.bio() }
-              <Button size="mini" onClick={ this.toggleForm }>{ showForm ? 'Cancel' : 'Edit Bio' }</Button>
-            </Segment>
-            <Segment>
-              <h3>Interests</h3>
-            </Segment>
-            <Segment>
-              <h3>Music</h3>
-            </Segment>
-          </Grid.Column>
-          <Grid.Column>
-            <Card.Group itemsPerRow={ 1 }>
-              { this.posts() }
-            </Card.Group>
-          </Grid.Column>
-
-        </Grid>
-      </div>
+        <Segment textAlign="center" >
+          <Button size="mini" onClick={ this.toggleForm }>{ showForm ? 'Cancel' : 'Update your status' }</Button>
+        </Segment>
+        <Card.Group itemsPerRow={ 1 }>
+          { this.posts() }
+        </Card.Group>
+      </div >
     )
   }
 }
 
-const mapStateToProps = ( state ) =>
+const mapStateToProps = ( state, props ) =>
 {
-  return { coolPerson: state.user, posts: state.posts, bio: state.bios, }
-}
+  const posts = state.posts
 
+  return {
+    coolPerson: state.user,
+    posts,
+  }
+}
 
 export default connect( mapStateToProps )( Posts );
 

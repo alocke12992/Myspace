@@ -2,14 +2,14 @@ x = 0
 30.times do 
   x += 1
   user = User.create(
-    name: Faker::BackToTheFuture.character,
+    name: Faker::StarWars.character,
     image: Faker::Avatar.image,
     email: "test#{x}@test.com",
     password: 'password',
   )
   5.times do 
     Post.create(
-    body: Faker::Hipster.paragraph, 
+    body: Faker::StarWars.quote, 
     user_id: user.id,
     )
   end 
@@ -20,3 +20,4 @@ x = 0
     )
     end 
 end
+

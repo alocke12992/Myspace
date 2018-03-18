@@ -2,7 +2,7 @@ class Api::BiosController < ApplicationController
   before_action :set_bio, only: [:show, :update, :destroy]
 
   def index
-    render json: Bio.order(created_at: :desc)
+    render json: current_user.bios.all
   end
 
   def show
