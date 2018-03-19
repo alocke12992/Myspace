@@ -6,6 +6,7 @@ class User < ActiveRecord::Base
   include DeviseTokenAuth::Concerns::User
  has_many :posts
  has_many :bios
+ has_many :comments
 
  serialize :friends, Array 
 

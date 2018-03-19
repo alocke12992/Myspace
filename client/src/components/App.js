@@ -9,7 +9,9 @@ import ProtectedRoute from './ProtectedRoute';
 import AuthRoute from './AuthRoute';
 import FetchUser from './FetchUser';
 import { Switch, Route } from 'react-router-dom';
-import Users from './Users'
+import UserView from './UserView';
+import FetchUserProfiles from './FetchUserProfiles';
+import Posts from './Posts'
 import Profile from './Profile'
 
 
@@ -29,7 +31,8 @@ class App extends Component
             <AuthRoute exact path='/login' component={ Login } />
             <AuthRoute exact path='/register' component={ Register } />
             <ProtectedRoute exact path='/profile' component={ Profile } />
-            <ProtectedRoute exact path='/users' component={ Users } />
+            <Route path='/users' component={ FetchUserProfiles } />
+            <Route exact path='/posts' component={ Posts } />
             <Route component={ NoMatch } />
           </Switch>
         </FetchUser>

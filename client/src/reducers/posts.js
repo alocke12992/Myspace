@@ -2,7 +2,7 @@ import
 {
   POSTS,
   ADD_POST,
-  EDIT_POST,
+  UPDATE_POST,
   DELETE_POST,
 } from '../actions/posts'
 
@@ -15,7 +15,7 @@ const posts = ( state = [], action ) =>
       return action.posts
     case ADD_POST:
       return [action.post, ...state]
-    case EDIT_POST:
+    case UPDATE_POST:
       return state.map( p =>
       {
         if ( p.id === action.post.id )

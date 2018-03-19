@@ -1,10 +1,10 @@
 class Api::PostsController < ApplicationController
 
-  before_action :set_post, only: [:show, :update ]
+  before_action :set_post, only: [:show, :update, :destroy]
 
  
   def index
-    render json: current_user.posts.all
+    render json: current_user.posts.all.order(created_at: :desc)
   end
 
 
@@ -36,10 +36,10 @@ class Api::PostsController < ApplicationController
 
   private 
     def set_post 
-      @post = current_user.posts.find(params[:id])
+      @post = Post.find(params[:id])
     end 
     
     def post_params 
-      params.require(:post).permit(:username, :body, :img, :user_id) 
+      params.require(:post).permit(:username, :body, :img, :id, :user_id) 
     end 
 end

@@ -1,6 +1,6 @@
 import React from 'react';
 import { Segment, Form, Button, TextArea } from 'semantic-ui-react';
-import { editPost, addPost } from '../actions/posts';
+import { updatePost, addPost } from '../actions/posts';
 import { connect } from 'react-redux';
 
 class PostForm extends React.Component
@@ -11,9 +11,9 @@ class PostForm extends React.Component
     body: " ",
 
   }
-  state = { title: " ", body: " ", }
+  state = { ...this.initialState }
 
-  componentDidMount()
+  componentWillMount()
   {
     if ( this.props.id )
       this.setState( { ...this.props } )
@@ -28,54 +28,40 @@ class PostForm extends React.Component
   handleSubmit = ( e ) =>
   {
     e.preventDefault()
-    const post = {
-      title: this.state.title,
-      body: this.state.body,
-      user_id: this.props.coolPerson.id
-    }
+    const post = { ...this.state }
     const { dispatch, closeForm } = this.props
-    dispatch( addPost( post ) )
-    this.setState( { title: '', body: '' } )
+    debugger
+    const func = this.props.id ? updatePost : addPost
+    dispatch( func( post ) )
     closeForm()
   }
 
-  form()
+  render()
   {
-    const { title, body, coolPerson } = this.props
+    const { title, body } = this.props
     return (
       <div>
         <Segment.Group>
-          <Segment as="h2">What's going on { coolPerson.name } ?</Segment>
-          <Segment.Group>
-            <Segment>
-              <Form onSubmit={ this.handleSubmit }>
-                <Form.Group widths="equal">
-                  <Form.Input
-                    onChange={ this.handleChange }
-                    value={ title }
-                    name='title'
-                    placeholder='Title'
-                  />
-                </Form.Group>
-                <TextArea onChange={ this.handleChange } defaultValue={ body } name='body' placeholder="Tell us what you're up to" />
-                <Segment textAlign='center' basic>
-                  <Button primary type="submit">Submit</Button>
-                </Segment>
-              </Form>
-            </Segment>
-          </Segment.Group>
+          <Segment>
+            <Form onSubmit={ this.handleSubmit }>
+              <Form.Group widths="equal">
+                <Form.Input
+                  onChange={ this.handleChange }
+                  value={ title }
+                  name='title'
+                  placeholder='Title'
+                />
+              </Form.Group>
+              <TextArea onChange={ this.handleChange } defaultValue={ body } name='body' placeholder="Tell us what you're up to" />
+              <Form.Button>Submit</Form.Button>
+            </Form>
+          </Segment>
         </Segment.Group>
       </div>
     )
   }
 }
-const mapStateToProps = ( state ) =>
-{
-  return {
-    coolPerson: state.user,
-    posts: state.posts,
-  }
-}
 
 
-export default connect( mapStateToProps )( PostForm ); 
+
+export default connect()( PostForm ); 

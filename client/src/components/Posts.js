@@ -1,17 +1,19 @@
 import React from 'react'
 import { connect } from 'react-redux';
-import { getPosts, addPost, deletePost } from '../actions/posts';
+import { getPosts, addPost, deletePost, updatePost } from '../actions/posts';
 import { Card, Icon, Button, Form, Segment, TextArea } from 'semantic-ui-react';
 import PostForm from './PostForm'
 
 class Posts extends React.Component
 {
-  state = { showform: false }
+  state = { title: '', body: '', showform: false, editing: false }
 
   componentDidMount()
   {
     this.props.dispatch( getPosts() )
   }
+
+  componentWillMount
 
   toggleForm = () =>
   {
@@ -20,13 +22,13 @@ class Posts extends React.Component
       return { showForm: !state.showForm }
     } )
   }
-
   handleChange = ( e ) =>
   {
 
     const { name, value } = e.target
     this.setState( { [name]: value } )
   }
+
 
   handleSubmit = ( e ) =>
   {
@@ -37,18 +39,11 @@ class Posts extends React.Component
       user_id: this.props.coolPerson.id
     }
     const { dispatch, closeForm } = this.props
-    dispatch( addPost( post ) )
-    this.setState( { title: '', body: '', showForm: false } )
+    const func = this.props.id ? updatePost : addPost
+    dispatch( func( post ) )
+    this.setState( { title: '', body: '', showForm: false, editing: false } )
   }
 
-  removePost = () =>
-  {
-
-    const post = { id: this.props.id }
-    const { dispatch } = this.props
-
-    dispatch( deletePost( post ) )
-  }
 
   form = () => 
   {
@@ -78,25 +73,31 @@ class Posts extends React.Component
     )
   }
 
+
+
   posts = () =>
   {
-    const { posts } = this.props
+    const { posts, dispatch } = this.props
+    const { showForm } = this.state
     return posts.map( post =>
-
-      <Card key={ post.id }>
-        <Card.Content>
-          { post.name }
-          <Card.Header>
-            { post.title }
-          </Card.Header>
+    {
+      return (
+        <Card key={ post.id } >
           <Card.Content>
-            { post.body }
+            { post.name }
+            <Card.Header>
+              { post.title }
+            </Card.Header>
+            <Card.Content>
+              { post.body }
+            </Card.Content>
+            {/* TODO EDIT AND DELETE */ }
+            <Button id={ post.id } floated="right" icon="edit" onClick={ () => this.toggleForm() } />
+            <Button id={ post.id } floated="right" icon="delete" onClick={ () => dispatch( deletePost( post.id ) ) } />
           </Card.Content>
-          {/* TODO EDIT AND DELETE */ }
-          <Button id={ post.id } floated="right" icon="edit" />
-          <Button id={ post.id } floated="right" icon="delete" onClick={ this.removePost } />
-        </Card.Content>
-      </Card>
+        </Card>
+      )
+    }
     )
   }
 
@@ -130,11 +131,12 @@ class Posts extends React.Component
 
 const mapStateToProps = ( state, props ) =>
 {
-  const posts = state.posts
+
 
   return {
     coolPerson: state.user,
-    posts,
+    posts: state.posts,
+
   }
 }
 

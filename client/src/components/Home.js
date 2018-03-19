@@ -21,7 +21,7 @@ class Home extends Component
         <Image src={ user.image } />
         <Card.Content>
           <Card.Header>
-            { user.name }
+            <Link to={ `/users/${ user.id }` }>{ user.name }</Link>
           </Card.Header>
           <Card.Meta>
             <span className='date'>
