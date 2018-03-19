@@ -13,6 +13,13 @@ class Home extends Component
     axios.get( '/api/users' )
       .then( res => this.setState( { users: res.data } ) )
   }
+
+  addFriend = ( id ) =>
+  {
+    let { users } = this.state
+    axios.put( `/api/users/${ id }` )
+      .then( () => this.setState( { users: users.filter( u => u.id !== id ) } ) )
+  }
   users = () =>
   {
     const { users } = this.state
@@ -33,9 +40,9 @@ class Home extends Component
           </Card.Description>
         </Card.Content>
         <Card.Content extra>
-          <a>
-            <Icon name='user' />
-            22 Friends
+          <a onClick={ () => this.addFriend( user.id ) }>
+            <Icon name='add user' />
+            Add Friend
           </a>
         </Card.Content>
       </Card>

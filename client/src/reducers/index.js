@@ -10,7 +10,6 @@ const rootReducer = combineReducers( {
   flash,
   posts,
   bios,
-  // comments,
 } );
 
 export default rootReducer;
