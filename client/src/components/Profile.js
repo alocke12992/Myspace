@@ -4,8 +4,8 @@ import { getBios, addBio } from '../actions/bios'
 import { getPosts } from '../actions/posts'
 import Posts from './Posts'
 import Bio from './Bio';
-import { Grid, Segment } from 'semantic-ui-react';
-
+import { Grid, Segment, Image } from 'semantic-ui-react';
+import MyFriends from './MyFriends'
 class Profile extends React.Component
 {
 
@@ -21,17 +21,21 @@ class Profile extends React.Component
   render()
   {
     // { isAdmin ? this.showMore() : null) }
+    const { user } = this.props
     return (
       <div>
-        <Grid>
-          <Segment.Group horizontal>
+        <Grid centered>
+          <Segment.Group>
             {/* main info section  */ }
-            <Segment>These will be the details</Segment>
+            <Image src={ user.image } />
+            <Segment>
+              <h3>{ user.name }</h3>
+            </Segment>
           </Segment.Group>
         </Grid>
         <Grid columns={ 2 } relaxed>
           <Grid.Column>
-            <Segment.Group>
+            <Segment.Group textAlign="center">
               {/* Details section */ }
               Details section
               <Segment>
@@ -58,12 +62,13 @@ class Profile extends React.Component
               </Segment>
             </Segment.Group>
             <Segment.Group>
-              {/* Activity stream */ }
-              <Segment>Activity Stream </Segment>
+              {/* Friends */ }
+              <MyFriends />
+              <Segment>My Friends</Segment>
             </Segment.Group>
             <Segment.Group>
-              {/* Friends */ }
-              <Segment>Top Friends</Segment>
+              {/* Activity stream */ }
+              <Segment>Activity Stream </Segment>
             </Segment.Group>
             {/* Comments */ }
             <Segment>Comments</Segment>
@@ -75,8 +80,14 @@ class Profile extends React.Component
       </div>
     )
   }
-
-
 }
 
-export default connect()( Profile )
+const mapStateToProps = ( state, props ) =>
+{
+  return {
+    user: state.user,
+
+  }
+}
+
+export default connect( mapStateToProps )( Profile )

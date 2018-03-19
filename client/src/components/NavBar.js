@@ -1,27 +1,35 @@
 import React, { Component } from 'react';
-import { Menu } from 'semantic-ui-react';
+import { Menu, Segment, Image } from 'semantic-ui-react';
 import { Link, withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { handleLogout } from '../actions/auth';
 import Users from './Users'
+import MyFriends from './MyFriends'
+import Profile from './Profile'
+import axios from 'axios'
+
 
 class NavBar extends Component
 {
+
+
   rightNavs = () =>
   {
     const { user, dispatch, history } = this.props;
-
     if ( user.id )
     {
       return (
         <Menu.Menu position='right'>
+          <Link to='/my_friends'>
+            <Menu.Item name='My Friends' />
+          </Link>
+          <Link to='/profile'>
+            <Menu.Item name="My Profile" />
+          </Link>
           <Menu.Item
             name='Logout'
             onClick={ () => dispatch( handleLogout( history ) ) }
           />
-          <Link to='/users'>
-            <Menu.Item name="Find Friends" />
-          </Link>
         </Menu.Menu>
       );
     }
@@ -41,12 +49,17 @@ class NavBar extends Component
   {
     return (
       <div>
-        <Menu pointing secondary>
-          <Link to='/'>
-            <Menu.Item name='home' />
-          </Link>
-          { this.rightNavs() }
-        </Menu>
+        <Segment>
+          <Image src='./myspace_logo.jpg' />
+        </Segment>
+        <Segment>
+          <Menu pointing secondary>
+            <Link to='/'>
+              <Menu.Item name='home' />
+            </Link>
+            { this.rightNavs() }
+          </Menu>
+        </Segment>
       </div>
     );
   }
@@ -54,7 +67,7 @@ class NavBar extends Component
 
 const mapStateToProps = state =>
 {
-  return { user: state.user };
+  return { user: state.user, users: state.users };
 };
 
 export default withRouter( connect( mapStateToProps )( NavBar ) );

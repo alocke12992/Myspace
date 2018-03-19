@@ -2,7 +2,10 @@ import React, { Component } from 'react';
 import { Header } from 'semantic-ui-react';
 import { Link } from 'react-router-dom';
 import axios from 'axios'
-import { Card, Icon, Image } from 'semantic-ui-react'
+import { Card, Icon, Image, Segment, Button } from 'semantic-ui-react'
+import { connect } from 'react-redux'
+import MyFriends from './MyFriends'
+import Users from './Users'
 
 class Home extends Component
 {
@@ -10,15 +13,23 @@ class Home extends Component
 
   componentDidMount()
   {
-    axios.get( '/api/users' )
-      .then( res => this.setState( { users: res.data } ) )
+    axios.get( '/api/take_four' )
+      .then( res =>
+      {
+        this.setState( { users: res.data } )
+        this.props.dispatch( { type: 'HEADERS', headers: res.headers } )
+      } )
   }
 
   addFriend = ( id ) =>
   {
     let { users } = this.state
     axios.put( `/api/users/${ id }` )
-      .then( () => this.setState( { users: users.filter( u => u.id !== id ) } ) )
+      .then( res =>
+      {
+        this.setState( { users: users.filter( u => u.id !== id ) } )
+        this.props.dispatch( { type: 'HEADERS', headers: res.headers } );
+      } )
   }
   users = () =>
   {
@@ -52,16 +63,22 @@ class Home extends Component
   {
     return (
       <div>
-        <Header as='h1' textAlign='center'>Home Component
+        <Header as='h1' textAlign='center'>Welcome to MyFace
         </Header>
-        <Link to='/profile'>My Profile</Link>
-        <Card.Group itemsPerRow={ 4 }>
-          { this.users() }
-        </Card.Group>
+        <Segment.Group>
+          <Segment >Check out these cool users</Segment>
+          <Segment>
+            <Card.Group itemsPerRow={ 4 }>
+              { this.users() }
+            </Card.Group>
+            <Link to='/users'>Find Friends</Link>
+          </Segment>
+        </Segment.Group>
       </div>
 
     );
   }
 }
 
-export default Home;
+
+export default connect()( Home );

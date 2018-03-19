@@ -19,4 +19,7 @@ class User < ActiveRecord::Base
     ids = ids.empty? ? [0] : ids 
     User.where("id NOT IN (?)", ids).order("RANDOM()")
   end 
+
+
+  
 end
