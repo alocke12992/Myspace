@@ -53,6 +53,11 @@ class Profile extends React.Component
                 Basic Details
               </Segment>
             </Segment.Group>
+            <Segment.Group>
+              {/* Friends */ }
+              <Segment>My Friends</Segment>
+              <MyFriends />
+            </Segment.Group>
           </Grid.Column>
           <Grid.Column>
             <Segment.Group>
@@ -60,11 +65,6 @@ class Profile extends React.Component
               <Segment>
                 <Posts />
               </Segment>
-            </Segment.Group>
-            <Segment.Group>
-              {/* Friends */ }
-              <MyFriends />
-              <Segment>My Friends</Segment>
             </Segment.Group>
             <Segment.Group>
               {/* Activity stream */ }

@@ -67,7 +67,7 @@ class Home extends Component
         </Header>
         <Segment.Group>
           <Segment >Check out these cool users</Segment>
-          <Segment>
+          <Segment padded="very">
             <Card.Group itemsPerRow={ 4 }>
               { this.users() }
             </Card.Group>
