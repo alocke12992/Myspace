@@ -75,6 +75,7 @@ class Posts extends React.Component
 
 
 
+
   posts = () =>
   {
     const { posts, dispatch } = this.props

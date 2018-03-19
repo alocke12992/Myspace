@@ -7,10 +7,11 @@ import Users from './Users'
 import MyFriends from './MyFriends'
 import Profile from './Profile'
 import axios from 'axios'
-
+import myspace_logo from './myspace_logo.jpg'
 
 class NavBar extends Component
 {
+
 
 
   rightNavs = () =>
@@ -47,10 +48,14 @@ class NavBar extends Component
 
   render()
   {
+    const backgroundStyle =
+      {
+        backgroundColor: "#063796"
+      }
     return (
-      <div>
-        <Segment>
-          <Image src='./myspace_logo.jpg' />
+      <div >
+        <Segment style={ backgroundStyle }>
+          <img src={ require( './myspace.gif' ) } />
         </Segment>
         <Segment>
           <Menu pointing secondary>
